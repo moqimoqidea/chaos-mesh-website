@@ -15,6 +15,11 @@
   color: transparent;
 }
 
+:global(html[lang='zh']) .heroSubtitle {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
 @media screen and (max-width: 767px) {
   .whiteboardCol {
     --ifm-col-width: calc(1 / 12 * 100%) !important;

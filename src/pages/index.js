@@ -3,7 +3,6 @@ import Head from '@docusaurus/Head'
 import Link from '@docusaurus/Link'
 import Translate, { translate } from '@docusaurus/Translate'
 import useBaseUrl from '@docusaurus/useBaseUrl'
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import CodeBlock from '@theme/CodeBlock'
 import Layout from '@theme/Layout'
 import { clsx } from 'clsx'
@@ -27,12 +26,17 @@ gsap.registerPlugin(ScrollTrigger)
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
-const description =
-  'Chaos Mesh brings various types of fault simulation to Kubernetes and has an enormous capability to orchestrate fault scenarios. It helps you conveniently simulate various abnormalities that might occur in reality during the development, testing, and production environments and find potential problems in the system.'
-
 function Home() {
   const homeRef = useRef(null)
-  const { siteConfig, i18n } = useDocusaurusContext()
+  const homeDescription = translate({
+    id: 'home.desc',
+    message:
+      'Chaos Mesh brings various types of fault simulation to Kubernetes and has an enormous capability to orchestrate fault scenarios. It helps you conveniently simulate various abnormalities that might occur in reality during the development, testing, and production environments and find potential problems in the system.',
+  })
+  const homeTagline = translate({
+    id: 'home.meta.tagline',
+    message: 'A Powerful Chaos Engineering Platform for Kubernetes',
+  })
 
   useIsomorphicLayoutEffect(() => {
     const navbarInner = document.querySelector('.navbar__inner')
@@ -76,9 +80,9 @@ function Home() {
   }, [])
 
   return (
-    <Layout description={translate({ message: description, id: 'home.desc' })}>
+    <Layout description={homeDescription}>
       <Head>
-        <title>Chaos Mesh: {siteConfig.tagline}</title>
+        <title>Chaos Mesh: {homeTagline}</title>
       </Head>
       <main ref={homeRef}>
         <div className="hero tw:relative tw:h-192 tw:pt-0 tw:overflow-hidden">
@@ -92,26 +96,22 @@ function Home() {
                     styles.heroTitle,
                   )}
                 >
-                  {/* Due to the below texts are not simple strings, so we can't use <Translate /> here. */}
-                  {i18n.currentLocale === 'en' && (
-                    <>
-                      <span>Break</span>
-                      <br />
-                      <span>Your System</span>
-                      <br />
-                      <span>Constructively</span>
-                    </>
-                  )}
-                  {i18n.currentLocale === 'zh' && (
-                    <>
-                      <span>破而后立</span>
-                      <br />
-                      <span className="tw:text-3xl">建设性地解构与优化你的系统</span>
-                    </>
-                  )}
+                  <Translate
+                    id="home.hero.title"
+                    values={{
+                      lineBreak: <br />,
+                      subtitle: (
+                        <span className={styles.heroSubtitle}>
+                          <Translate id="home.hero.title.subtitle">Constructively</Translate>
+                        </span>
+                      ),
+                    }}
+                  >
+                    {'Break{lineBreak}Your System{lineBreak}{subtitle}'}
+                  </Translate>
                 </h1>
                 <p className="tw:lg:text-lg tw:font-medium tw:rounded-2xl tw:backdrop-blur-sm tw:lg:backdrop-blur">
-                  <Translate id="home.desc">{description}</Translate>
+                  {homeDescription}
                 </p>
                 <div className="tw:flex tw:gap-3">
                   <Link
@@ -171,18 +171,18 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
           <div className="tw:container tw:mx-auto tw:max-lg:px-4">
             <div className="tw:max-w-[800px] tw:mb-12 tw:mx-auto tw:text-center">
               <h2 className="tw:text-4xl tw:xl:text-5xl">
-                {/* Due to the below texts are not simple strings, so we can't use <Translate /> here. */}
-                {i18n.currentLocale === 'en' && (
-                  <span>
-                    Make <span className={styles.heroTitle}>Cloud Native + Chaos Engineering</span> simple and
-                    straightforward
-                  </span>
-                )}
-                {i18n.currentLocale === 'zh' && (
-                  <span>
-                    让<span className={styles.heroTitle}>云原生 + 混沌工程</span>变得简单直接
-                  </span>
-                )}
+                <Translate
+                  id="home.features.title"
+                  values={{
+                    emphasis: (
+                      <span className={styles.heroTitle}>
+                        <Translate id="home.features.title.emphasis">Cloud Native + Chaos Engineering</Translate>
+                      </span>
+                    ),
+                  }}
+                >
+                  {'Make {emphasis} simple and straightforward'}
+                </Translate>
               </h2>
               <p className="tw:lg:text-lg tw:font-medium">
                 <Translate id="home.features.desc">
@@ -202,17 +202,18 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
           <div className="tw:container tw:mx-auto tw:max-lg:px-4">
             <div className="tw:max-w-[800px] tw:mx-auto tw:text-center">
               <h2 className="tw:text-4xl tw:xl:text-5xl">
-                {/* Due to the below texts are not simple strings, so we can't use <Translate /> here. */}
-                {i18n.currentLocale === 'en' && (
-                  <span>
-                    <span className={styles.heroTitle}>Wide variety</span> of failure types
-                  </span>
-                )}
-                {i18n.currentLocale === 'zh' && (
-                  <span>
-                    <span className={styles.heroTitle}>多样化</span>的故障类型
-                  </span>
-                )}
+                <Translate
+                  id="home.failuretypes.title"
+                  values={{
+                    emphasis: (
+                      <span className={styles.heroTitle}>
+                        <Translate id="home.failuretypes.title.emphasis">Wide variety</Translate>
+                      </span>
+                    ),
+                  }}
+                >
+                  {'{emphasis} of failure types'}
+                </Translate>
               </h2>
               <p className="tw:lg:text-lg tw:font-medium">
                 <Translate id="home.failuretypes.desc">
@@ -228,7 +229,10 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
                 styles.chaosCategory,
               )}
               src="img/home/chaos-category.svg"
-              alt="Chaos Category"
+              alt={translate({
+                id: 'home.failuretypes.imageAlt',
+                message: 'Chaos Mesh failure categories',
+              })}
             />
 
             <div className="tw:flex tw:justify-center tw:mt-12">
@@ -254,19 +258,19 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
             <div className="tw:relative tw:flex tw:flex-col tw:lg:flex-row tw:lg:items-center tw:gap-8">
               <div className="tw:flex-1">
                 <div className="tw:xl:w-[90%]">
-                  {/* TODO: add translation. */}
                   <h2 className="tw:text-4xl tw:xl:text-5xl">
-                    {/* Due to the below texts are not simple strings, so we can't use <Translate /> here. */}
-                    {i18n.currentLocale === 'en' && (
-                      <span>
-                        Orchestrate complex fault scenarios with <span className={styles.heroTitle}>Workflows</span>
-                      </span>
-                    )}
-                    {i18n.currentLocale === 'zh' && (
-                      <span>
-                        使用<span className={styles.heroTitle}>工作流</span>编排复杂的故障场景
-                      </span>
-                    )}
+                    <Translate
+                      id="home.workflows.title"
+                      values={{
+                        emphasis: (
+                          <span className={styles.heroTitle}>
+                            <Translate id="home.workflows.title.emphasis">Workflows</Translate>
+                          </span>
+                        ),
+                      }}
+                    >
+                      {'Orchestrate complex fault scenarios with {emphasis}'}
+                    </Translate>
                   </h2>
                   <p className="tw:lg:text-lg tw:font-medium">
                     <Translate id="home.workflows.desc">
@@ -323,17 +327,18 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
                   <Translate id="home.experimental">Experimental</Translate>
                 </span>
                 <h2 className="tw:text-4xl tw:xl:text-5xl">
-                  {/* Due to the below texts are not simple strings, so we can't use <Translate /> here. */}
-                  {i18n.currentLocale === 'en' && (
-                    <span>
-                      Meet <span className={styles.heroTitle}>Chaosd</span>: A Chaos Toolkit for Physical Machines
-                    </span>
-                  )}
-                  {i18n.currentLocale === 'zh' && (
-                    <span>
-                      认识<span className={styles.heroTitle}>Chaosd</span>：物理机混沌工具箱
-                    </span>
-                  )}
+                  <Translate
+                    id="home.chaosd.title"
+                    values={{
+                      emphasis: (
+                        <span className={styles.heroTitle}>
+                          <Translate id="home.chaosd.title.emphasis">Chaosd</Translate>
+                        </span>
+                      ),
+                    }}
+                  >
+                    {'Meet {emphasis}: A Chaos Toolkit for Physical Machines'}
+                  </Translate>
                 </h2>
                 <p className="tw:lg:text-lg tw:font-medium">
                   <Translate
@@ -366,17 +371,18 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
           <div className="tw:container tw:mx-auto tw:max-lg:px-4">
             <div className="tw:max-w-[800px] tw:mb-12 tw:mx-auto tw:text-center">
               <h2 className="tw:text-4xl tw:xl:text-5xl">
-                {/* Due to the below texts are not simple strings, so we can't use <Translate /> here. */}
-                {i18n.currentLocale === 'en' && (
-                  <span>
-                    Building the Whole Community <span className={styles.heroTitle}>Together</span>
-                  </span>
-                )}
-                {i18n.currentLocale === 'zh' && (
-                  <span>
-                    <span className={styles.heroTitle}>共建</span>社区，共同前行
-                  </span>
-                )}
+                <Translate
+                  id="home.buildcommunity.title"
+                  values={{
+                    emphasis: (
+                      <span className={styles.heroTitle}>
+                        <Translate id="home.buildcommunity.title.emphasis">Together</Translate>
+                      </span>
+                    ),
+                  }}
+                >
+                  {'Building the Whole Community {emphasis}'}
+                </Translate>
               </h2>
               <p className="tw:lg:text-lg tw:font-medium">
                 <Translate id="home.buildcommunity.desc">
@@ -438,11 +444,18 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --create-namespace`}
               </Card>
             </div>
             <p className="tw:font-medium tw:text-center">
-              Chaos Mesh is a{' '}
-              <Link className="tw:underline" to="https://cncf.io/">
-                Cloud Native Computing Foundation
-              </Link>{' '}
-              incubating project.
+              <Translate
+                id="home.cncf.desc"
+                values={{
+                  cncfLink: (
+                    <Link className="tw:underline" to="https://cncf.io/">
+                      <Translate id="home.cncf.name">Cloud Native Computing Foundation</Translate>
+                    </Link>
+                  ),
+                }}
+              >
+                {'Chaos Mesh is a {cncfLink} incubating project.'}
+              </Translate>
             </p>
             <div className="cncf-logo tw:h-16" />
           </div>
